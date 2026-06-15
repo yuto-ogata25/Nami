@@ -141,3 +141,37 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
+# Laravel
+/vendor/
+/backend/.env
+/backend/.env.backup
+/backend/.env.production
+/backend/storage/*.key
+/backend/public/hot
+/backend/public/storage
+/backend/bootstrap/cache/
+/backend/node_modules/
+
+# Next.js
+/frontend/.env
+/frontend/.env.local
+/frontend/.env.production
+/frontend/.next/
+/frontend/out/
+
+# Docker
+.docker/
+
+# LocalStack
+.localstack/
+
+# Terraform
+/infra/.terraform/
+/infra/*.tfstate
+/infra/*.tfstate.backup
+/infra/.terraform.lock.hcl
+/infra/terraform.tfvars
+
+# AWS
+.aws/
