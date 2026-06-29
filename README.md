@@ -96,12 +96,11 @@ Nami は、機能の多さで競うのではなく、**“続く”を生む UX*
 ### コストを抑える具体策
 
 - **Aurora Serverless v2 の最小 ACU を 0 に設定可能**（2024/11 のアップデート）。アクセスがない間は DB が自動一時停止し、コンピューティング料金は発生しない（ストレージ料金のみ）。※再開に最大 15 秒程度かかる点は開発では許容
-- **東京リージョンの Aurora Serverless v2 は 2024/11 に 25% 値下げ済み**
 - **NAT Gateway は立てっぱなしだと地味に高い**。検証が終わったら必ず削除
 - **AWS Budgets で予算アラートを最初に設定**（例：月 1,000 円超でメール通知）
 - **Terraform で全リソース管理 → `terraform destroy` で一括削除**し、消し忘れ課金を防ぐ
 
-> 正確な金額は変動するため、本番前に必ず [AWS Pricing Calculator](https://calculator.aws/) で試算してください。
+> 正確な金額は変動するため、本番前に必ず [AWS Pricing Calculator](https://calculator.aws/) で試算すること。
 
 ---
 
