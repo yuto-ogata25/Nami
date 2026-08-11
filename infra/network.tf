@@ -17,7 +17,9 @@ resource "aws_subnet" "public" {
   vpc_id                  = aws_vpc.main.id
   availability_zone       = local.azs[count.index]
   cidr_block              = cidrsubnet(var.vpc_cidr, 8, count.index + 1) # 10.0.1.0/24, 10.0.2.0/24
-  map_public_ip_on_launch = true                                        # ALB・NAT Gatewayはpublic IPが必要
+  # ALBとNAT Gatewayは自前でpublic IP/EIPを持つため、サブネット側の自動付与は不要。
+  # 将来ここに何かを置いたとき、意図せずpublic IPが付く状態を作らない。
+  map_public_ip_on_launch = false                                  # ALB・NAT Gatewayはpublic IPが必要
 
   tags = { Name = "${local.name_prefix}-public-${local.azs[count.index]}" }
 }

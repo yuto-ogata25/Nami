@@ -1,5 +1,6 @@
 # ============================================================
-# Security Group（ALB用：HTTPのみ許可）
+# Security Group（ALB用：インターネットからHTTPのみ受ける。
+# egressはファイル末尾のaws_security_group_ruleで定義）
 # ============================================================
 resource "aws_security_group" "alb" {
   name        = "${local.name_prefix}-alb-sg"
@@ -11,14 +12,6 @@ resource "aws_security_group" "alb" {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  egress {
-    description = "to ECS Fargate"
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
@@ -111,4 +104,28 @@ resource "aws_lb_listener_rule" "api" {
       values = ["/api/*"]
     }
   }
+}
+
+# ============================================================
+# ALB egress（ECS Fargateの待ち受けポートにのみ許可）
+# SG内に書くとECS SGとの循環参照になるため、別リソースに切り出している
+# ============================================================
+resource "aws_security_group_rule" "alb_egress_frontend" {
+  type                     = "egress"
+  description              = "to frontend container"
+  from_port                = 3000
+  to_port                  = 3000
+  protocol                 = "tcp"
+  security_group_id        = aws_security_group.alb.id
+  source_security_group_id = aws_security_group.ecs.id
+}
+
+resource "aws_security_group_rule" "alb_egress_backend" {
+  type                     = "egress"
+  description              = "to backend container"
+  from_port                = 8000
+  to_port                  = 8000
+  protocol                 = "tcp"
+  security_group_id        = aws_security_group.alb.id
+  source_security_group_id = aws_security_group.ecs.id
 }

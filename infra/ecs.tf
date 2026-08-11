@@ -8,7 +8,11 @@ resource "aws_ecs_cluster" "main" {
 }
 
 # ============================================================
-# Security Group（ECS Fargate用：ALBからの通信のみ許可）
+# Security Group（ECS Fargate用：ALBから、必要なポートのみ許可）
+#
+# 送信元をALBのSGに限定したうえで、ポートもコンテナが待ち受ける
+# 3000 / 8000 だけに絞る。全ポート開放だと「ALBが侵害されたとき
+# タスクの全ポートに到達できる」状態になり、多層防御の思想と合わないため。
 # ============================================================
 resource "aws_security_group" "ecs" {
   name        = "${local.name_prefix}-ecs-sg"
@@ -16,11 +20,19 @@ resource "aws_security_group" "ecs" {
   vpc_id      = aws_vpc.main.id
 
   ingress {
-    description     = "from ALB"
-    from_port       = 0
-    to_port         = 65535
+    description     = "frontend from ALB"
+    from_port       = 3000
+    to_port         = 3000
     protocol        = "tcp"
     security_groups = [aws_security_group.alb.id] # ALBからのみ、直接インターネットからは不可
+  }
+
+  ingress {
+    description     = "backend from ALB"
+    from_port       = 8000
+    to_port         = 8000
+    protocol        = "tcp"
+    security_groups = [aws_security_group.alb.id]
   }
 
   egress {
@@ -28,7 +40,7 @@ resource "aws_security_group" "ecs" {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["0.0.0.0/0"] # 外部決済APIを叩く前提のため宛先は絞らない
   }
 
   tags = { Name = "${local.name_prefix}-ecs-sg" }
