@@ -172,6 +172,9 @@ vite.config.ts.timestamp-*
 /infra/*.tfstate.backup
 /infra/.terraform.lock.hcl
 /infra/terraform.tfvars
+/.terraform/
+/*.tfstate
+/*.tfstate.backup
 
 # AWS
 .aws/

@@ -1,0 +1,3 @@
+CREATE DATABASE IF NOT EXISTS nami_test CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+GRANT ALL PRIVILEGES ON nami_test.* TO 'nami'@'%';
+FLUSH PRIVILEGES;

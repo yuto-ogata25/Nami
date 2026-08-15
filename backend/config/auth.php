@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Operator;
 use App\Models\User;
 
 return [
@@ -42,6 +43,11 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
+        'operator' => [
+            'driver' => 'session',
+            'provider' => 'operators',
+        ],
     ],
 
     /*
@@ -62,9 +68,16 @@ return [
     */
 
     'providers' => [
+        // 'tenant_aware' は資格情報照合時のみ CompanyScope を外す独自プロバイダ
+        // （App\Auth\TenantAwareUserProvider、App\Providers\AppServiceProvider で登録）。
         'users' => [
-            'driver' => 'eloquent',
+            'driver' => 'tenant_aware',
             'model' => env('AUTH_MODEL', User::class),
+        ],
+
+        'operators' => [
+            'driver' => 'eloquent',
+            'model' => Operator::class,
         ],
 
         // 'users' => [

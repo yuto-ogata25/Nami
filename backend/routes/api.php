@@ -1,12 +1,24 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\Customer\AuthenticatedSessionController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Route;
 
+// ALBのヘルスチェック対象。認証で塞ぐとECSタスクが全てunhealthy判定になるため、常に公開のままにする。
 Route::get('/health', function () {
-    $version = DB::select('SELECT VERSION() as version')[0]->version;
+    DB::select('select 1');
+
     return response()->json([
         'status' => 'ok',
-        'db_version' => $version,
+        'db_driver' => DB::connection()->getDriverName(),
     ]);
+});
+
+Route::post('/login', [AuthenticatedSessionController::class, 'store'])
+    ->middleware('guest:web');
+
+Route::middleware('auth:web')->group(function () {
+    Route::post('/logout', [AuthenticatedSessionController::class, 'destroy']);
+    Route::get('/user', [UserController::class, 'show']);
 });

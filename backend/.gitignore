@@ -14,6 +14,8 @@
 /.zed
 /auth.json
 /node_modules
+# DB_DATABASE をsqlite接続のフォールバックパスに誤って使われた場合に生成される
+/nami
 /public/build
 /public/fonts-manifest.dev.json
 /public/hot
