@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\Customer\AuthenticatedSessionController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\FiscalYearController;
+use App\Http\Controllers\KpiController;
 use App\Http\Controllers\StrategyGoalController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\DB;
@@ -29,4 +30,5 @@ Route::middleware('auth:web')->group(function () {
     Route::get('/fiscal-years', [FiscalYearController::class, 'index']);
 
     Route::apiResource('strategy-goals', StrategyGoalController::class);
+    Route::apiResource('kpis', KpiController::class);
 });

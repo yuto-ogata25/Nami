@@ -121,7 +121,12 @@ export default function StrategyGoalsPage() {
     <div className="flex flex-1 flex-col gap-4 p-4">
       <div className="flex items-center justify-between">
         <h1 className="text-lg font-bold">戦略目標</h1>
-        <Button onClick={openCreateForm}>新規登録</Button>
+        <div className="flex gap-2">
+          <Link href="/kpis" className="text-sm text-primary underline self-center">
+            KPI一覧へ
+          </Link>
+          <Button onClick={openCreateForm}>新規登録</Button>
+        </div>
       </div>
 
       <div className="flex items-center gap-2">

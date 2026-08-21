@@ -45,9 +45,12 @@ export default function CustomerLoginPage() {
               {user.name}（{user.email}）としてログインしています。
             </CardDescription>
           </CardHeader>
-          <CardContent className="flex gap-2">
+          <CardContent className="flex flex-wrap gap-2">
             <Link href="/strategy-goals" className={buttonVariants({ variant: "default" })}>
               戦略目標を管理する
+            </Link>
+            <Link href="/kpis" className={buttonVariants({ variant: "default" })}>
+              KPIを管理する
             </Link>
             <Button
               variant="outline"

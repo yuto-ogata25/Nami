@@ -76,7 +76,9 @@ erDiagram
         id company_id
         id strategy_goal_id
         string name
+        text definition
         id owner_user_id
+        int importance
         string unit
         string polarity "positive / negative"
         string aggregation_type "sum / average / latest"
@@ -145,6 +147,9 @@ erDiagram
 - `polarity`: 売上=positive（上昇が good）、コスト=negative（下降が good）。達成判定の向きを自動化
 - `aggregation_type`: 累計型（売上）は sum、実測型（顧客満足度）は average / latest。年間実績の集計方法が異なるため必須
 - 年間目標は月次へ均等按分するボタンを用意。月ごとの手動調整も可
+- `definition`（定義）・`importance`（重要度、1〜5）は `strategy_goal` と同様の項目をKPI自体にも持たせる（GitHub Issue #6 の画面仕様に基づき追加。当初のER図には無かった項目）
+- `perspective`（視点）・部門属性はKPI自体には持たせない。紐づく `strategy_goal` の値をJOINして一覧に表示する（KPIごとに戦略目標と異なる視点・部門を設定するケースは無い前提）
+- `measurement_cycle` はMVP期間中フォームに出さず、サーバー側で常に `monthly` を設定する（日次・週次の入力UIは実装しない方針のため）
 
 ### 戦略目標（strategy_goal）
 - `perspective` は `financial` / `customer` / `process` / `learning` の4値に固定（DBはenumではなくstring＋アプリ側バリデーションで許容値を担保。将来の視点拡張に備えマイグレーション不要にする）
@@ -173,3 +178,4 @@ erDiagram
 - 2026-08-11: 商用化を見据えた全面改訂。operator / fiscal_year / strategy_goal / kpi / kpi_target / kpi_record / action_plan を追加し、7→11テーブル体制へ
 - 2026-08-13: v0.3（認証）実装に伴い companies / departments / operators テーブルおよび users.company_id 等を実装。email のグローバル一意性を設計判断として追記
 - 2026-08-16: v0.4（戦略目標）実装に伴い fiscal_years / strategy_goals テーブルを実装。strategy_goal に is_adopted（採用フラグ）を追加
+- 2026-08-21: v0.5（KPI）実装に伴い kpis テーブルを実装。kpi に definition（定義）・importance（重要度）を追加
