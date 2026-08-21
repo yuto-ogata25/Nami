@@ -149,6 +149,7 @@ DELETE /api/strategy-goals/{id}     削除
 - **shadcn/ui のコンポーネントを優先。** 独自実装は既存コンポーネントで賄えない場合のみ
 - サーバー状態は **TanStack Query** で管理。`useState` でAPIレスポンスを持たない
 - 型は `types/` に集約し、APIレスポンスの型を必ず定義する
+- フォーム項目の名称がメンバーに分かりづらい場合は、`components/field-label.tsx` の `FieldLabel` でホバー説明（?アイコン）を付ける。Label を都度個別実装しない
 
 ### 共通
 
