@@ -1,8 +1,9 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -44,7 +45,10 @@ export default function CustomerLoginPage() {
               {user.name}（{user.email}）としてログインしています。
             </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="flex gap-2">
+            <Link href="/strategy-goals" className={buttonVariants({ variant: "default" })}>
+              戦略目標を管理する
+            </Link>
             <Button
               variant="outline"
               onClick={() => logout.mutate()}

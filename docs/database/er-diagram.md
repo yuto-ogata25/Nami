@@ -69,6 +69,7 @@ erDiagram
         text definition
         int importance
         id owner_user_id
+        boolean is_adopted "採用フラグ。一覧でチェックボックス表示"
     }
     kpi {
         id id
@@ -145,6 +146,16 @@ erDiagram
 - `aggregation_type`: 累計型（売上）は sum、実測型（顧客満足度）は average / latest。年間実績の集計方法が異なるため必須
 - 年間目標は月次へ均等按分するボタンを用意。月ごとの手動調整も可
 
+### 戦略目標（strategy_goal）
+- `perspective` は `financial` / `customer` / `process` / `learning` の4値に固定（DBはenumではなくstring＋アプリ側バリデーションで許容値を担保。将来の視点拡張に備えマイグレーション不要にする）
+- `department_id` は nullable。部門横断（全社）の戦略目標を許容するため
+- `is_adopted`（採用フラグ）：一覧画面でチェックボックスとして表示・トグルする。ブレインストーミングで出た候補のうち実際に採用するものを管理する運用を想定（GitHub Issue #5 の画面仕様に基づき追加。当初のER図には無かった項目）
+- `owner_user_id` / `department_id` / `fiscal_year_id` はいずれも「同一company_idに属すること」をFormRequestで明示的にバリデーションする。`exists()`ルールはGlobal Scopeを経由しないため、`->where('company_id', ...)` を必ず付与する
+
+### 年度（fiscal_year）
+- MVP時点では年度管理画面（開始月・締め日からの期間自動生成）は未実装。年度は`company_id`+`year`の一意制約のみを持つ最小構成で先行作成し、tinker等で手動作成する運用とする
+- 期間自動生成・締め済み年度の編集制御（`status`）は今後のバージョンで実装
+
 ### 認証
 - Laravel標準（Breeze / Fortify）を採用。Cognitoは商用化後に載せ替えを検討
 - 顧客と運営者はマルチ認証ガードで二系統に分離
@@ -161,3 +172,4 @@ erDiagram
 - 2026-07-08: 初版作成（Phase 0b）
 - 2026-08-11: 商用化を見据えた全面改訂。operator / fiscal_year / strategy_goal / kpi / kpi_target / kpi_record / action_plan を追加し、7→11テーブル体制へ
 - 2026-08-13: v0.3（認証）実装に伴い companies / departments / operators テーブルおよび users.company_id 等を実装。email のグローバル一意性を設計判断として追記
+- 2026-08-16: v0.4（戦略目標）実装に伴い fiscal_years / strategy_goals テーブルを実装。strategy_goal に is_adopted（採用フラグ）を追加

@@ -5,15 +5,20 @@ import type { NextRequest } from "next/server";
 const SESSION_COOKIE = "laravel-session";
 
 // UX目的の簡易チェック（セッションCookieの有無のみ）。
-// 実際の認可はLaravel側の auth:operator ミドルウェアが最終防衛線であり、ここでは代替できない。
+// 実際の認可はLaravel側の auth:web / auth:operator ミドルウェアが最終防衛線であり、ここでは代替できない。
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
+  const hasSession = request.cookies.has(SESSION_COOKIE);
 
   if (pathname.startsWith("/operator") && pathname !== "/operator/login") {
-    const hasSession = request.cookies.has(SESSION_COOKIE);
-
     if (!hasSession) {
       return NextResponse.redirect(new URL("/operator/login", request.url));
+    }
+  }
+
+  if (pathname.startsWith("/strategy-goals")) {
+    if (!hasSession) {
+      return NextResponse.redirect(new URL("/login", request.url));
     }
   }
 
@@ -21,5 +26,5 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: "/operator/:path*",
+  matcher: ["/operator/:path*", "/strategy-goals/:path*"],
 };
