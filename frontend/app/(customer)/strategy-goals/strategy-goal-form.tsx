@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 
+import { FieldLabel } from "@/components/field-label";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -155,7 +156,9 @@ export function StrategyGoalForm({
           </div>
 
           <div className="flex flex-col gap-2">
-            <Label htmlFor="definition">定義</Label>
+            <FieldLabel htmlFor="definition" help="この戦略目標が何を目指すのかを具体的に説明します">
+              定義
+            </FieldLabel>
             <Textarea
               id="definition"
               value={definition}
@@ -164,7 +167,9 @@ export function StrategyGoalForm({
           </div>
 
           <div className="flex flex-col gap-2">
-            <Label htmlFor="importance">重要度（1〜5）</Label>
+            <FieldLabel htmlFor="importance" help="この戦略目標がどれだけ重要かを1（低い）〜5（高い）で表します">
+              重要度（1〜5）
+            </FieldLabel>
             <Input
               id="importance"
               type="number"
@@ -198,7 +203,12 @@ export function StrategyGoalForm({
               checked={isAdopted}
               onCheckedChange={(checked) => setIsAdopted(checked === true)}
             />
-            <Label htmlFor="is_adopted">採用する</Label>
+            <FieldLabel
+              htmlFor="is_adopted"
+              help="チェックを外すと候補として保持したまま一覧の対象から実質的な運用対象外にできます（削除はしません）"
+            >
+              採用する
+            </FieldLabel>
           </div>
 
           {errorMessage && <p className="text-sm text-destructive">{errorMessage}</p>}

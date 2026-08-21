@@ -10,6 +10,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { FieldLabel } from "@/components/field-label";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -108,7 +109,9 @@ export function KpiForm({ open, onOpenChange, kpi, onSubmit, isSubmitting, error
           </div>
 
           <div className="flex flex-col gap-2">
-            <Label htmlFor="name">指標</Label>
+            <FieldLabel htmlFor="name" help="測定する対象の名前です。例：売上高、顧客満足度">
+              指標
+            </FieldLabel>
             <Input
               id="name"
               required
@@ -118,7 +121,9 @@ export function KpiForm({ open, onOpenChange, kpi, onSubmit, isSubmitting, error
           </div>
 
           <div className="flex flex-col gap-2">
-            <Label htmlFor="definition">定義</Label>
+            <FieldLabel htmlFor="definition" help="この指標が何を意味し、どう計算するかを説明します">
+              定義
+            </FieldLabel>
             <Textarea
               id="definition"
               value={definition}
@@ -143,7 +148,9 @@ export function KpiForm({ open, onOpenChange, kpi, onSubmit, isSubmitting, error
           </div>
 
           <div className="flex flex-col gap-2">
-            <Label htmlFor="importance">重要度（1〜5）</Label>
+            <FieldLabel htmlFor="importance" help="この指標がどれだけ重要かを1（低い）〜5（高い）で表します">
+              重要度（1〜5）
+            </FieldLabel>
             <Input
               id="importance"
               type="number"
@@ -156,7 +163,9 @@ export function KpiForm({ open, onOpenChange, kpi, onSubmit, isSubmitting, error
           </div>
 
           <div className="flex flex-col gap-2">
-            <Label htmlFor="unit">単位</Label>
+            <FieldLabel htmlFor="unit" help="測定値の単位です。例：円、%、件、人">
+              単位
+            </FieldLabel>
             <Input
               id="unit"
               required
@@ -167,7 +176,12 @@ export function KpiForm({ open, onOpenChange, kpi, onSubmit, isSubmitting, error
           </div>
 
           <div className="flex flex-col gap-2">
-            <Label htmlFor="polarity">極性</Label>
+            <FieldLabel
+              htmlFor="polarity"
+              help="positiveは数値が上がるほど良い指標（例：売上）、negativeは数値が下がるほど良い指標（例：コスト、離職率）です"
+            >
+              極性
+            </FieldLabel>
             <Select value={polarity} onValueChange={(value) => setPolarity(value as Polarity)}>
               <SelectTrigger id="polarity">
                 <SelectValue placeholder="極性を選択" />
@@ -183,7 +197,12 @@ export function KpiForm({ open, onOpenChange, kpi, onSubmit, isSubmitting, error
           </div>
 
           <div className="flex flex-col gap-2">
-            <Label htmlFor="aggregation_type">集計方法</Label>
+            <FieldLabel
+              htmlFor="aggregation_type"
+              help="sumは月々の値を積み上げる指標（例：売上）、averageは平均を使う指標、latestは最新の値をそのまま使う指標（例：満足度アンケート）です"
+            >
+              集計方法
+            </FieldLabel>
             <Select
               value={aggregationType}
               onValueChange={(value) => setAggregationType(value as AggregationType)}
